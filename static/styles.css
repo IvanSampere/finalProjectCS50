@@ -1,0 +1,41 @@
+body {
+    background-color: rgb(243, 184, 184);
+    opacity: 10;
+}
+
+div#title {
+    padding: 2rem 2rem;
+    margin-bottom: 0;
+    color: white;
+    background-color: brown;
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    height: auto;
+    width: 100%;
+    z-index: 5050;
+    border: 3px solid brown;
+}
+.nav-link {
+    padding: 0rem;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: brown;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: brown;
+}
+.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
+     color: brown; 
+}
+.site-footer--container
+{
+    width: 100%;
+    padding: 32px 12px 12px 12px;
+    margin: 0 auto;
+    background-color: brown;
+    text-align: center;
+    color:white;
+}
