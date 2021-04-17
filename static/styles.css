@@ -39,3 +39,10 @@ nav {
     text-align: center;
     color:white;
 }
+
+main .form-control {
+    display:inline-block;
+    width: 25%;
+    padding: 2rem;
+
+}

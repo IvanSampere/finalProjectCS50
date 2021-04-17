@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+    <form method="POST">
+        <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="Username">
+            <input type="text" class="form-control" name="password" placeholder="Password">
+            <input type="text" class="form-control" name="confirmation" placeholder="Confirm password">
+        </div>
+    </form>
+{% endblock %}
