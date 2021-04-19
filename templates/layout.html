@@ -18,20 +18,21 @@
 <body>
     <div id="title" class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1><a href="/" style="text-decoration: none;">Welcome to Special Activities</a></h1>
+            <h1><a href="/" style="text-decoration: none;">Special Activities Repository</a></h1>
         </div>
     </div>
     <nav class="navbar navbar-expand-sm bg-white navbar-dark">
         <ul class="navbar-nav" style="margin-left: 1rem;">
-            <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
+            <form class="navbar-nav" action="/content" method="GET">
+                <li class="nav-item"><a class="nav-link" href="/content?q=hearing_impairment">hearing impairment</a></li>
+                <li class="nav-item"><a class="nav-link" href="/content?q=visual_disability">visual disability</a></li>
+                <li class="nav-item"><a class="nav-link" href="/content?q=physical_disability">physical disability</a></li>
+                <li class="nav-item"><a class="nav-link" href="/content?q=intelectual_disability">intellectual disability</a></li>
+            </form>
         </ul>
         {% if session.user_id %}
         <ul class="navbar-nav ml-auto">
-            <button id="btn_nav" class="nav-item btn dropdown-toggle" data-toggle="dropdown">{{ session.user_id }}</button>
+            <button id="btn_nav" class="nav-item btn dropdown-toggle" data-toggle="dropdown">{{ session.username }}</button>
             <div id="dropdown_user" class="dropdown-menu dropdown-menu-right">
                 <li class="nav-item"><a class="nav-link" href="/new_activity">New Activity</a></li>
                 <li class="nav-item"><a class="nav-link" href="/log_out">Log out</a></li>
@@ -45,6 +46,17 @@
         </ul>
         {% endif %}
     </nav>
+
+    {% if get_flashed_messages() %}
+    <header>
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Warning!</strong> {{message}}
+          </div>
+        {% endfor %}
+    </header>
+    {% endif %}
 
     <main class="container p-5">
         {% block main %} {% endblock %}
