@@ -18,11 +18,11 @@
 <body>
     <div id="title" class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1>Welcome to Special Activities</h1>
+            <h1><a href="/" style="text-decoration: none;">Welcome to Special Activities</a></h1>
         </div>
     </div>
     <nav class="navbar navbar-expand-sm bg-white navbar-dark">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" style="margin-left: 1rem;">
             <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
@@ -30,20 +30,25 @@
             <li class="nav-item"><a class="nav-link" href="#">Link 1</a></li>
         </ul>
         {% if session.user_id %}
-        <ul class="navbar-nav ml-auto mt-2">
-            <li class="nav-item"><a class="nav-link" href="#">Log out</a></li>
+        <ul class="navbar-nav ml-auto">
+            <button id="btn_nav" class="nav-item btn dropdown-toggle" data-toggle="dropdown">{{ session.user_id }}</button>
+            <div id="dropdown_user" class="dropdown-menu dropdown-menu-right">
+                <li class="nav-item"><a class="nav-link" href="/new_activity">New Activity</a></li>
+                <li class="nav-item"><a class="nav-link" href="/log_out">Log out</a></li>
+            </div>
         </ul>
+            
         {% else %}
-        <ul class="navbar-nav ml-auto mt-2">
-            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-            <li class="nav-item"><a class="nav-link" href="/login">Log in</a></li>
+        <ul class="navbar-nav ml-auto">
+            <li id="btn_nav" class="nav-item btn"><a href="/register">Register</a></li>
+            <li id="btn_nav" class="nav-item btn"><a href="/login">Log in</a></li>
         </ul>
         {% endif %}
     </nav>
 
-    <div id="content" class="container p-5">
+    <main class="container p-5">
         {% block main %} {% endblock %}
-    </div>
+    </main>
     
     <div class="site-footer--container">
         <div class="site-footer--copyright fs-fine">
