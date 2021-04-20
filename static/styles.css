@@ -87,15 +87,20 @@ main .btn, main .btn:hover {
 }
 
 #filter_div {
-    display: block;
     text-align: left;
-    float: left;
-    margin: 1rem;
+    font-size: 12px;
+    margin: 1rem 2rem;
     padding: 1rem;
     background-color: white;
     border-radius: 7px !important;
    
 }
-#tags {
+#tags, #ages  {
+    float: left;
     padding: 1rem;
+}
+#time
+{
+    padding: 1rem;
+    float: left;
 }
