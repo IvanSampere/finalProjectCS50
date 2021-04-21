@@ -61,7 +61,7 @@ nav {
     background-color: white;
     text-align: start;
     width: 35%;
-    padding: 2%;
+    padding: 2rem;
     border-radius: 7px !important;
     box-shadow: 2px 10px brown;
     margin: 2rem auto 4.3rem auto;
@@ -78,18 +78,19 @@ main .btn, main .btn:hover {
 
 #btn_nav {
     text-align: center;
-    margin: auto 0.5rem;
+    margin: 1rem 0.5rem;
     padding: auto;
     height: auto;
-    color: white;
+    color: white; 
     background-color: brown;
     border-color: brown;
 }
 
 #filter_div {
-    text-align: left;
+    text-justify: newspaper;
+    text-align: justify;
     font-size: 12px;
-    margin: 1rem 2rem;
+    margin: auto 25%;
     padding: 1rem;
     background-color: white;
     border-radius: 7px !important;
@@ -98,9 +99,11 @@ main .btn, main .btn:hover {
 #tags, #ages  {
     float: left;
     padding: 1rem;
+    border-right: 1px solid brown;
 }
 #time
 {
     padding: 1rem;
+    margin: 2.5rem auto;
     float: left;
 }
