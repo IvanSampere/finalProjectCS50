@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Activity
+{% endblock %}
+
+{% block new_activity %}
+    <form action="/new_activity" method="post">
+        <div class="activity_info">
+            <div class="form-group">
+                <label for="usr"><strong>Title:</strong></label>
+                <input type="text" class="form-control" name="title">
+            </div>
+            <div class="form-check-inline">
+                <div class="tags">
+                    <h6>Tags</h6>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="tag" value="hearing_impairment">hearing impairment
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="tag" value="visual disability">visual disability
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="tag" value="physical_disability">physical disability
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="tag" value="intellectual_disability">intellectual disability
+                        </label>
+                    </div>
+                </div>
+                <div class="ages">
+                    <h6>Ages</h6>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="age" value="0-6">0-6 years old
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="age" value="7-11">7-11 years old
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="age" value="12-16">12-16 years old
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="age" value="16+">16+ years old
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="short-explanation">
+                <label for="comment"><strong>Short explanation:</strong></label>
+                <textarea id="short" class="form-control" rows="5" id="comment"></textarea>
+                <p style="text-align: right;">0/580 characters</p>
+            </div>
+        </div>
+        <div class="activity_content">
+            <div class="form-group">
+                <label for="comment"><strong>Activity:</strong></label>
+                <textarea class="form-control" rows="25" id="comment"></textarea>
+            </div>
+        </div>
+        <input id="btn_new_activity" class="btn" type="submit" value="New Activity">
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            let button = document.getElementById("btn_new_activity");
+            document.getElementById("short").onkeyup = function() {
+                let short_explanation = document.getElementById("short").value;
+                let characters = document.querySelector("p");
+                characters.innerHTML = `${short_explanation.length}/580 characters`
+                
+                if (short_explanation.length > 580)
+                {
+                    button.disabled = true;
+                }
+                else 
+                {
+                    button.disabled = false;
+                }
+            }
+        });
+    </script>
+{% endblock %}

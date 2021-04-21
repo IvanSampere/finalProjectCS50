@@ -35,6 +35,7 @@
             <button id="btn_nav" class="nav-item btn dropdown-toggle" data-toggle="dropdown">{{ session.username }}</button>
             <div id="dropdown_user" class="dropdown-menu dropdown-menu-right">
                 <li class="nav-item"><a class="nav-link" href="/new_activity">New Activity</a></li>
+                <li class="nav-item"><a class="nav-link" href="/my_activities">My activities</a></li>
                 <li class="nav-item"><a class="nav-link" href="/log_out">Log out</a></li>
             </div>
         </ul>
@@ -58,8 +59,11 @@
     </header>
     {% endif %}
 
-    <main class="container p-5">
+    <main class="container p-4">
         {% block main %} {% endblock %}
+    </main>
+    <main class="container">
+        {% block new_activity %} {% endblock %}
     </main>
     
     <div class="site-footer--container">

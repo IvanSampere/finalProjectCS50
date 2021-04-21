@@ -7,7 +7,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from cs50 import SQL
 
 
-
 app = Flask("__name__")
 
 # Ensure templates are auto-reloaded
@@ -42,7 +41,7 @@ def login():
         # Check the username exist and the password is correct
         if len(row_user) != 1 or not check_password_hash(row_user[0]['hash'], password):
             flash("Invalid user/email or password")
-            return redirect("/login")
+            return render_template("login.html")
 
         # Keep the data from the session
         session['user_id'] = row_user[0]['id']
@@ -88,8 +87,10 @@ def log_out():
     # redirect to the index
     return redirect("/")
 
+
 @app.route("/content", methods=['GET', 'POST'])
 def content():
+    """ TODO """
     if request.method == 'POST':
         tag = request.form.getlist("tag")
         print(tag[0])
@@ -98,7 +99,27 @@ def content():
         content = request.args.get("q")
         return render_template("content.html")
 
-@app.route("/new_activity", methods=["GET", "POST"])
+
+@app.route("/activity", methods=["GET", "POST"])
+def activity():
+    """ TODO """
+    return render_template("activity.html")
+
+
+@app.route("/my_activities")
+def my_activities():
+    """ TODO """
+    return render_template("my_activities.html")
+
+
+@app.route("/new_activity", methods=['GET', 'POST'])
 def new_activity():
     """ TODO """
-    return "new activity"
+    return render_template("new_activity.html")
+
+
+@app.route("/delete")
+def delete_activity():
+    """ TODO """
+    return "TODO"
+

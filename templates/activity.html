@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Activity
+{% endblock %}
+
+{% block main %}
+    <div id="activity">
+        <h1>{{ activity['name'] }}</h1>
+        <h5>{{ user['name'] }}</h5>
+        <h6>{{ activity['time'] }}</h6>
+
+        <p>
+            {{ activity['activity'] }}
+        </p>
+
+    </div>
+    
+{% endblock %}
