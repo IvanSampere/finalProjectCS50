@@ -108,13 +108,46 @@ def activity():
 
 @app.route("/my_activities")
 def my_activities():
-    """ TODO """
-    return render_template("my_activities.html")
+    # Get the activity info 
+    activities = db.execute("SELECT * FROM activities WHERE user_id = ?", 
+                            session['user_id'])
+    # Get the explanation and put in every row a tag <br> for the html
+    explanation = ""
+    for aux in range(len(activities)):
+        for letter in activities[aux]['explanation']:
+            explanation += letter
+            if letter == "\r":
+                explanation+="<br>"
+
+        activities[aux]['explanation'] = explanation
+        explanation = ""
+
+    return render_template("my_activities.html", activities=activities)
 
 
 @app.route("/new_activity", methods=['GET', 'POST'])
 def new_activity():
-    """ TODO """
+    if request.method == 'POST': 
+        # Get the data from the html form
+        title = request.form.get('title')
+        tags = request.form.getlist('tag')
+        ages = request.form.getlist('age')
+        explanation = request.form.get('explanation')
+        activity = request.form.get('activity')
+        # Inser into the activities table the title, the text areas and the user id
+        activity_id = db.execute('INSERT INTO activities(title, explanation, activity, user_id) VALUES (?,?,?,?)',
+                                    title, explanation, activity, session['user_id'])
+        # Get the name of the tags and inserts into their table
+        for tag in tags:
+            db.execute('INSERT INTO tags(name, activity_id) VALUES (?,?)',
+                        tag, activity_id)
+        # Get the name of the ages and inserts into their table
+        for age in ages:
+            db.execute('INSERT INTO ages(age, activity_id) VALUES (?,?)',
+                        age, activity_id)
+        flash("New Activity write succesfully!")
+        return redirect("/new_activity")
+    
     return render_template("new_activity.html")
 
 

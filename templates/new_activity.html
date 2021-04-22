@@ -16,22 +16,22 @@
                     <h6>Tags</h6>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="tag" value="hearing_impairment">hearing impairment
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="hearing_impairment">hearing impairment
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="tag" value="visual disability">visual disability
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="visual disability">visual disability
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="tag" value="physical_disability">physical disability
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="physical_disability">physical disability
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="tag" value="intellectual_disability">intellectual disability
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="intellectual_disability">intellectual disability
                         </label>
                     </div>
                 </div>
@@ -39,30 +39,30 @@
                     <h6>Ages</h6>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="age" value="0-6">0-6 years old
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="0-6">0-6 years old
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="age" value="7-11">7-11 years old
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="7-11">7-11 years old
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="age" value="12-16">12-16 years old
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="12-16">12-16 years old
                         </label>
                     </div>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="age" value="16+">16+ years old
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="16+">16+ years old
                         </label>
                     </div>
                 </div>
             </div>
             
-            <div class="short-explanation">
-                <label for="comment"><strong>Short explanation:</strong></label>
-                <textarea id="short" class="form-control" rows="5" id="comment"></textarea>
+            <div class="explanation">
+                <label for="explanation"><strong>Explanation:</strong></label>
+                <textarea id="explanation" class="form-control" rows="5"></textarea>
                 <p style="text-align: right;">0/580 characters</p>
             </div>
         </div>
@@ -77,21 +77,76 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function(){
+            let button_aux = true;
             let button = document.getElementById("btn_new_activity");
-            document.getElementById("short").onkeyup = function() {
-                let short_explanation = document.getElementById("short").value;
+            button.disabled = true;
+            let tags = document.querySelectorAll("#tag");
+            let ages = document.querySelectorAll("#age");
+            
+            for (let i=0; i < tags.length; i++)
+            {
+                tags[i].addEventListener("click", function(){
+                    let explanation = document.querySelector("#explanation").value;
+                    if ((tags[0].checked || tags[1].checked || tags[2].checked || tags[3].checked) && (ages[0].checked || ages[1].checked || ages[2].checked || ages[3].checked))
+                    {
+                            if (explanation.length > 0 && explanation.length <= 580)
+                            {
+                                button_aux = false;
+                                button.disabled = false;
+                            }
+                            else 
+                            {
+                                button_aux = true;
+                                button.disabled = true;
+                            }
+                    }
+                    else 
+                    {
+                        button_aux = true;
+                        button.disabled = true;
+                    }
+                });
+            }
+
+            for (let i=0; i < ages.length; i++)
+            {
+                ages[i].addEventListener("click", function(){
+                    let explanation = document.querySelector("#explanation").value;
+                    if ((tags[0].checked || tags[1].checked || tags[2].checked || tags[3].checked) && (ages[0].checked || ages[1].checked || ages[2].checked || ages[3].checked))
+                    {
+                            if (explanation.length > 0 && explanation.length <= 580)
+                            {
+                                button_aux = false;
+                                button.disabled = false;
+                            }
+                            else 
+                            {
+                                button_aux = true;
+                                button.disabled = true;
+                            }
+                    }
+                    else 
+                    {
+                        button_aux = true;
+                        button.disabled = true;
+                    }
+                });
+            }
+
+            document.getElementById("explanation").addEventListener("keyup", function(){
+                let explanation = document.getElementById("explanation").value;
                 let characters = document.querySelector("p");
-                characters.innerHTML = `${short_explanation.length}/580 characters`
+                characters.innerHTML = `${explanation.length}/580 characters`
                 
-                if (short_explanation.length > 580)
-                {
-                    button.disabled = true;
-                }
-                else 
+                if ((explanation.length > 0 && explanation.length <= 580) && !button_aux)
                 {
                     button.disabled = false;
                 }
-            }
+                else 
+                {
+                    button.disabled = true;
+                }
+            });
         });
     </script>
 {% endblock %}
