@@ -58,21 +58,16 @@
             <input id="btn_nav" class="nav-item btn" type="submit" value="Submit">
         </form>
     </div>
-
+    {% for activity in activities %}
     <div class="content_card">
         <div class="card">
-            <h3 class="card-title">Title</h3>
-            <h6 class="card-title">Ivan Sampere</h6>
-            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            <a href="/" class="card-link">Visit Activity</a>
-        </div>
-        <div class="card">
-            <h3 class="card-title">Title</h3>
-            <h6 class="card-title">Ivan Sampere</h6>
-            <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            <a href="/" class="card-link">Visit Activity</a>
+            <h3 class="card-title">{{ activity['title'] }}</h3>
+            <h6 class="card-title">{{ activity['username'] }}</h6>
+            <p class="card-text">{{ activity['explanation'] }}</p>
+            <a href="/activity?q={{ activity['id'] }}" class="card-link">Visit Activity</a>
         </div>
     </div>
+    {% endfor %}
     
 
 {% endblock %}

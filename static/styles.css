@@ -99,6 +99,7 @@ main .btn, main .btn:hover {
     border-radius: 7px !important;
    
 }
+
 #tags, #ages  {
     float: left;
     padding: 1rem;
@@ -121,7 +122,8 @@ main .btn, main .btn:hover {
     margin: 1rem 0.5rem;
     padding: 1rem;
     width: 33rem;
-    height: 25rem;
+    height: 28rem;
+    font-size: small;
     text-align: justify;
     border-radius: 10px !important;
 
@@ -140,7 +142,13 @@ main .btn, main .btn:hover {
 #activity {
     text-align: left;
 }
-
+#activity h5 {
+    text-align: right;
+}
+#activity h6 {
+    text-align: right;
+    border-bottom: 2px solid brown;
+}
 a img {
     float: right;
     width: 5rem ;
@@ -164,3 +172,4 @@ a img {
     width: auto;
     float: right;
 }
+

@@ -96,21 +96,46 @@ def content():
         print(tag[0])
         return redirect("/content")
     else:
-        content = request.args.get("q")
-        return render_template("content.html")
+        tag = request.args.get("q")
+        activities = db.execute("""SELECT activities.*, users.username 
+                                   FROM activities
+                                   INNER JOIN users ON activities.user_id = users.id
+                                   INNER JOIN tags ON activities.id = tags.activity_id WHERE tags.name IN (?)""",
+                                   tag)
+        print(activities)
+        return render_template("content.html", activities=activities)
 
 
 @app.route("/activity", methods=["GET", "POST"])
 def activity():
-    """ TODO """
-    return render_template("activity.html")
+    activity_id = request.args.get('q')
+
+    activity = db.execute('SELECT * FROM activities WHERE id = ?', 
+                           activity_id)
+
+    user = db.execute('SELECT username FROM users WHERE id = ?', 
+                       activity[0]['user_id'])
+    # Get the explanation and put in every row a tag <br> for the html  
+    activity_text = ""
+    for letter in activity[0]['activity']:
+        activity_text += letter
+        if letter == "\r":
+            activity_text+="<br>"
+
+    activity[0]['activity'] = activity_text
+    activity_text = ""
+    
+    return render_template("activity.html", activity=activity, user=user)
 
 
 @app.route("/my_activities")
 def my_activities():
-    # Get the activity info 
+    # Get the activity info and user name
     activities = db.execute("SELECT * FROM activities WHERE user_id = ?", 
                             session['user_id'])
+    if len(activities) > 0:
+        user = db.execute('SELECT username FROM users WHERE id = ?', 
+                        activities[0]['user_id'])
     # Get the explanation and put in every row a tag <br> for the html
     explanation = ""
     for aux in range(len(activities)):
@@ -121,9 +146,10 @@ def my_activities():
 
         activities[aux]['explanation'] = explanation
         explanation = ""
-
-    return render_template("my_activities.html", activities=activities)
-
+    if len(activities) > 0:
+        return render_template("my_activities.html", activities=activities, user=user)
+    else:
+        return render_template("my_activities.html")
 
 @app.route("/new_activity", methods=['GET', 'POST'])
 def new_activity():
@@ -151,8 +177,13 @@ def new_activity():
     return render_template("new_activity.html")
 
 
-@app.route("/delete")
+@app.route("/my_activities/delete")
 def delete_activity():
-    """ TODO """
-    return "TODO"
+    # Get the id from the request GET
+    activity_id = request.args.get("q")
+    # Dataquery to delete the activity
+    db.execute("DELETE FROM activities WHERE id = ?", 
+                activity_id)
+    flash("Delete succesfully!")
+    return redirect("/my_activities")
 

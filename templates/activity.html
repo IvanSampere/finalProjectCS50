@@ -6,12 +6,12 @@
 
 {% block main %}
     <div id="activity">
-        <h1>{{ activity['name'] }}</h1>
-        <h5>{{ user['name'] }}</h5>
-        <h6>{{ activity['time'] }}</h6>
+        <h1>{{ activity[0]['title'] }}</h1>
+        <h5>{{ user[0]['username'] }}</h5>
+        <h6>{{ activity[0]['day_published'] }}</h6>
 
         <p>
-            {{ activity['activity'] }}
+            {{ activity[0]['activity'] |safe }}
         </p>
 
     </div>
