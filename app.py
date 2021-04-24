@@ -23,8 +23,8 @@ db = SQL('sqlite:///project.db')
 
 @app.route("/")
 def index():
-    """ TODO """
-    return render_template("index.html")
+    activities = db.execute("SELECT DISTINCT activities.*, users.username FROM activities INNER JOIN users ON activities.user_id = users.id")
+    return render_template("index.html", activities=activities)
 
 
 @app.route("/login", methods=["GET","POST"])
@@ -90,7 +90,6 @@ def log_out():
 
 @app.route("/content", methods=['GET', 'POST'])
 def content():
-    """ TODO """
     if request.method == 'POST':
         tag = request.form.getlist("tag")
         age = request.form.getlist("age")
