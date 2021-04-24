@@ -27,7 +27,7 @@
                 <li class="nav-item"><a class="nav-link" href="/content?q=hearing_impairment">hearing impairment</a></li>
                 <li class="nav-item"><a class="nav-link" href="/content?q=visual_disability">visual disability</a></li>
                 <li class="nav-item"><a class="nav-link" href="/content?q=physical_disability">physical disability</a></li>
-                <li class="nav-item"><a class="nav-link" href="/content?q=intelectual_disability">intellectual disability</a></li>
+                <li class="nav-item"><a class="nav-link" href="/content?q=intellectual_disability">intellectual disability</a></li>
             </form>
         </ul>
         {% if session.user_id %}
@@ -35,6 +35,7 @@
             <button id="btn_nav" class="nav-item btn dropdown-toggle" data-toggle="dropdown">{{ session.username }}</button>
             <div id="dropdown_user" class="dropdown-menu dropdown-menu-right">
                 <li class="nav-item"><a class="nav-link" href="/new_activity">New Activity</a></li>
+                <li class="nav-item"><a class="nav-link" href="/my_activities">My activities</a></li>
                 <li class="nav-item"><a class="nav-link" href="/log_out">Log out</a></li>
             </div>
         </ul>
@@ -50,16 +51,19 @@
     {% if get_flashed_messages() %}
     <header>
         {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning alert-dismissible fade show">
+        <div class="alert alert-dark alert-dismissible fade show" style="text-align: center;">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Warning!</strong> {{message}}
+            <strong>Info!</strong> {{message}}
           </div>
         {% endfor %}
     </header>
     {% endif %}
 
-    <main class="container p-5">
+    <main class="container p-4">
         {% block main %} {% endblock %}
+    </main>
+    <main class="container">
+        {% block new_activity %} {% endblock %}
     </main>
     
     <div class="site-footer--container">

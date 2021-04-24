@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My Activities
+{% endblock %}
+
+{% block main %}
+    {% if activities %}
+        {% for activity in activities %}
+        <div class="content">
+            <div class="card">
+                <h3 class="card-title">{{ activity['title'] }}</h3>
+                <h6 class="card-title">{{ user[0]['username'] }}, {{ activity['day_published'] }}</h6>
+                <p class="card-text">{{ activity['explanation'] |safe }}</p>
+                <a href="/activity?q={{ activity['id'] }}" class="card-link">Visit Activity</a>
+                <a href="/my_activities/delete?q={{ activity['id'] }}"><img src="/static/trash_can.png" alt="delete"></a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h2 style="text-align: center;">You don´t have any activity yet</h2>
+    {% endif %}
+    
+
+{% endblock %}

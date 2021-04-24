@@ -7,7 +7,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from cs50 import SQL
 
 
-
 app = Flask("__name__")
 
 # Ensure templates are auto-reloaded
@@ -42,7 +41,7 @@ def login():
         # Check the username exist and the password is correct
         if len(row_user) != 1 or not check_password_hash(row_user[0]['hash'], password):
             flash("Invalid user/email or password")
-            return redirect("/login")
+            return render_template("login.html")
 
         # Keep the data from the session
         session['user_id'] = row_user[0]['id']
@@ -88,17 +87,133 @@ def log_out():
     # redirect to the index
     return redirect("/")
 
+
 @app.route("/content", methods=['GET', 'POST'])
 def content():
+    """ TODO """
     if request.method == 'POST':
         tag = request.form.getlist("tag")
-        print(tag[0])
-        return redirect("/content")
-    else:
-        content = request.args.get("q")
-        return render_template("content.html")
+        age = request.form.getlist("age")
+        time = request.form.get('time')
 
-@app.route("/new_activity", methods=["GET", "POST"])
+        if len(tag) == 0:
+            tag = ['hearing_impairment', 'visual_disability', 'physical_disability', 'intellectual_disability']
+        if len(age) == 0:
+            age = ['0-6', '7-11', '12-16', '16+']
+        if len(time) == 0:
+            time = 'newest'
+
+        if time == "newest":
+            activities = db.execute("""SELECT DISTINCT activities.*, users.username
+                                    FROM activities
+                                    INNER JOIN users ON activities.user_id = users.id
+                                    INNER JOIN tags ON activities.id = tags.activity_id
+                                    INNER JOIN ages ON activities.id = ages.activity_id AND tags.activity_id = ages.activity_id
+                                    WHERE tags.name IN (?) AND ages.age IN (?)
+                                    ORDER BY day_published DESC""",
+                                    tag, age)
+        elif time == "older":
+            activities = db.execute("""SELECT DISTINCT activities.*, users.username
+                                    FROM activities
+                                    INNER JOIN users ON activities.user_id = users.id
+                                    INNER JOIN tags ON activities.id = tags.activity_id
+                                    INNER JOIN ages ON activities.id = ages.activity_id 
+                                    WHERE tags.name IN (?) AND ages.age IN (?)""",
+                                    tag, age)
+
+        return render_template("content.html", activities=activities)
+
+    # Get the tag with the url
+    tag = request.args.get("q")
+    # query to get the activities
+    activities = db.execute("""SELECT DISTINCT activities.*, users.username 
+                                FROM activities
+                                INNER JOIN users ON activities.user_id = users.id
+                                INNER JOIN tags ON activities.id = tags.activity_id WHERE tags.name IN (?)
+                                ORDER BY day_published DESC""",
+                                tag)
+    # render the template with the activities
+    return render_template("content.html", activities=activities)
+
+
+@app.route("/activity", methods=["GET", "POST"])
+def activity():
+    activity_id = request.args.get('q')
+
+    activity = db.execute('SELECT * FROM activities WHERE id = ?', 
+                           activity_id)
+
+    user = db.execute('SELECT username FROM users WHERE id = ?', 
+                       activity[0]['user_id'])
+    # Get the explanation and put in every row a tag <br> for the html  
+    activity_text = ""
+    for letter in activity[0]['activity']:
+        activity_text += letter
+        if letter == "\r":
+            activity_text+="<br>"
+
+    activity[0]['activity'] = activity_text
+    activity_text = ""
+    
+    return render_template("activity.html", activity=activity, user=user)
+
+
+@app.route("/my_activities")
+def my_activities():
+    # Get the activity info and user name
+    activities = db.execute("SELECT * FROM activities WHERE user_id = ? ORDER BY day_published DESC", 
+                            session['user_id'])
+    if len(activities) > 0:
+        user = db.execute('SELECT username FROM users WHERE id = ?', 
+                        activities[0]['user_id'])
+    # Get the explanation and put in every row a tag <br> for the html
+    explanation = ""
+    for aux in range(len(activities)):
+        for letter in activities[aux]['explanation']:
+            explanation += letter
+            if letter == "\r":
+                explanation+="<br>"
+
+        activities[aux]['explanation'] = explanation
+        explanation = ""
+    if len(activities) > 0:
+        return render_template("my_activities.html", activities=activities, user=user)
+    else:
+        return render_template("my_activities.html")
+
+@app.route("/new_activity", methods=['GET', 'POST'])
 def new_activity():
-    """ TODO """
-    return "new activity"
+    if request.method == 'POST': 
+        # Get the data from the html form
+        title = request.form.get('title')
+        tags = request.form.getlist('tag')
+        ages = request.form.getlist('age')
+        explanation = request.form.get('explanation')
+        activity = request.form.get('activity')
+        # Inser into the activities table the title, the text areas and the user id
+        activity_id = db.execute('INSERT INTO activities(title, explanation, activity, user_id) VALUES (?,?,?,?)',
+                                    title, explanation, activity, session['user_id'])
+        # Get the name of the tags and inserts into their table
+        for tag in tags:
+            db.execute('INSERT INTO tags(name, activity_id) VALUES (?,?)',
+                        tag, activity_id)
+        # Get the name of the ages and inserts into their table
+        for age in ages:
+            db.execute('INSERT INTO ages(age, activity_id) VALUES (?,?)',
+                        age, activity_id)
+        flash("New Activity write succesfully!")
+        return redirect("/new_activity")
+    
+    return render_template("new_activity.html")
+
+
+@app.route("/my_activities/delete")
+def delete_activity():
+    # Get the id from the request GET
+    activity_id = request.args.get("q")
+    # Dataquery to delete the activity
+    db.execute("DELETE FROM activities WHERE id = ?", 
+                activity_id)
+    flash("Delete succesfully!")
+    return redirect("/my_activities")
+

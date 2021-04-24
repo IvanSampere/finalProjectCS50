@@ -1,0 +1,176 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Activity
+{% endblock %}
+
+{% block new_activity %}
+    <form action="/new_activity" method="post">
+        <div class="activity_info">
+            <div class="form-group">
+                <label for="title"><strong>Title:</strong></label>
+                <input id="title_activity" type="text" class="form-control" name="title" value="">
+            </div>
+            <div class="form-check-inline">
+                <div class="tags">
+                    <h6>Tags</h6>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="hearing_impairment">hearing impairment
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="visual disability">visual disability
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="physical_disability">physical disability
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="tag" type="checkbox" class="form-check-input" name="tag" value="intellectual_disability">intellectual disability
+                        </label>
+                    </div>
+                </div>
+                <div class="ages">
+                    <h6>Ages</h6>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="0-6">0-6 years old
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="7-11">7-11 years old
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="12-16">12-16 years old
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input id="age" type="checkbox" class="form-check-input" name="age" value="16+">16+ years old
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation">
+                <label for="explanation"><strong>Resume:</strong></label>
+                <textarea id="explanation" class="form-control" rows="5" name="explanation"></textarea>
+                <p style="text-align: right;">0/580 characters</p>
+            </div>
+        </div>
+        <div class="activity_content">
+            <div class="form-group">
+                <label for="comment"><strong>Activity:</strong></label>
+                <textarea id="activity" class="form-control" rows="25" name="activity"></textarea>
+            </div>
+        </div>
+        <input id="btn_new_activity" class="btn" type="submit" value="New Activity">
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            let button_aux = true;
+            let button = document.getElementById("btn_new_activity");
+            button.disabled = true;
+            let tags = document.querySelectorAll("#tag");
+            let ages = document.querySelectorAll("#age");
+            
+            document.querySelector('#title_activity').addEventListener('keyup', function(){
+                if (check_condictions())
+                {
+                    button.disabled = false;
+                }
+                else
+                {
+                    button.disabled = true;
+                }
+            });
+
+            for (let i=0; i < tags.length; i++)
+            {
+                tags[i].addEventListener("click", function(){
+                    if (check_condictions())
+                    {
+                        button.disabled = false;
+                    }
+                    else
+                    {
+                        button.disabled = true;
+                    }
+                });
+            }
+
+            for (let i=0; i < ages.length; i++)
+            {
+                ages[i].addEventListener("click", function(){
+                    if (check_condictions())
+                    {
+                        button.disabled = false;
+                    }
+                    else
+                    {
+                        button.disabled = true;
+                    }
+                });
+            }
+
+            document.getElementById("explanation").addEventListener("keyup", function(){
+                let explanation = document.getElementById("explanation").value;
+                let characters = document.querySelector("p");
+                characters.innerHTML = `${explanation.length}/580 characters`
+                
+                if (check_condictions())
+                {
+                    button.disabled = false;
+                }
+                else
+                {
+                    button.disabled = true;
+                }
+            });
+
+            document.querySelector('#activity').addEventListener('keyup', function(){
+                if (check_condictions())
+                {
+                    button.disabled = false;
+                }
+                else
+                {
+                    button.disabled = true;
+                }
+            });
+        });
+
+        function check_condictions()
+        {
+            let title = document.querySelector("#title_activity").value;
+            let tags = document.querySelectorAll("#tag");
+            let ages = document.querySelectorAll("#age");
+            let explanation = document.querySelector("#explanation").value;
+            let activity = document.querySelector("#activity").value;
+            if (title.length > 0)
+            {
+                if ((tags[0].checked || tags[1].checked || tags[2].checked || tags[3].checked) && (ages[0].checked || ages[1].checked || ages[2].checked || ages[3].checked))
+                {
+                    if (explanation.length > 0 && explanation.length <= 580)
+                    {
+                        if (activity.length > 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            return false;
+        }
+    </script>
+{% endblock %}
