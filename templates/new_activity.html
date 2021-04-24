@@ -8,8 +8,8 @@
     <form action="/new_activity" method="post">
         <div class="activity_info">
             <div class="form-group">
-                <label for="usr"><strong>Title:</strong></label>
-                <input type="text" class="form-control" name="title">
+                <label for="title"><strong>Title:</strong></label>
+                <input id="title_activity" type="text" class="form-control" name="title" value="">
             </div>
             <div class="form-check-inline">
                 <div class="tags">
@@ -61,7 +61,7 @@
             </div>
             
             <div class="explanation">
-                <label for="explanation"><strong>Explanation:</strong></label>
+                <label for="explanation"><strong>Resume:</strong></label>
                 <textarea id="explanation" class="form-control" rows="5" name="explanation"></textarea>
                 <p style="text-align: right;">0/580 characters</p>
             </div>
@@ -69,7 +69,7 @@
         <div class="activity_content">
             <div class="form-group">
                 <label for="comment"><strong>Activity:</strong></label>
-                <textarea class="form-control" rows="25" id="comment" name="activity"></textarea>
+                <textarea id="activity" class="form-control" rows="25" name="activity"></textarea>
             </div>
         </div>
         <input id="btn_new_activity" class="btn" type="submit" value="New Activity">
@@ -83,26 +83,26 @@
             let tags = document.querySelectorAll("#tag");
             let ages = document.querySelectorAll("#age");
             
+            document.querySelector('#title_activity').addEventListener('keyup', function(){
+                if (check_condictions())
+                {
+                    button.disabled = false;
+                }
+                else
+                {
+                    button.disabled = true;
+                }
+            });
+
             for (let i=0; i < tags.length; i++)
             {
                 tags[i].addEventListener("click", function(){
-                    let explanation = document.querySelector("#explanation").value;
-                    if ((tags[0].checked || tags[1].checked || tags[2].checked || tags[3].checked) && (ages[0].checked || ages[1].checked || ages[2].checked || ages[3].checked))
+                    if (check_condictions())
                     {
-                            if (explanation.length > 0 && explanation.length <= 580)
-                            {
-                                button_aux = false;
-                                button.disabled = false;
-                            }
-                            else 
-                            {
-                                button_aux = true;
-                                button.disabled = true;
-                            }
+                        button.disabled = false;
                     }
-                    else 
+                    else
                     {
-                        button_aux = true;
                         button.disabled = true;
                     }
                 });
@@ -111,23 +111,12 @@
             for (let i=0; i < ages.length; i++)
             {
                 ages[i].addEventListener("click", function(){
-                    let explanation = document.querySelector("#explanation").value;
-                    if ((tags[0].checked || tags[1].checked || tags[2].checked || tags[3].checked) && (ages[0].checked || ages[1].checked || ages[2].checked || ages[3].checked))
+                    if (check_condictions())
                     {
-                            if (explanation.length > 0 && explanation.length <= 580)
-                            {
-                                button_aux = false;
-                                button.disabled = false;
-                            }
-                            else 
-                            {
-                                button_aux = true;
-                                button.disabled = true;
-                            }
+                        button.disabled = false;
                     }
-                    else 
+                    else
                     {
-                        button_aux = true;
                         button.disabled = true;
                     }
                 });
@@ -138,15 +127,50 @@
                 let characters = document.querySelector("p");
                 characters.innerHTML = `${explanation.length}/580 characters`
                 
-                if ((explanation.length > 0 && explanation.length <= 580) && !button_aux)
+                if (check_condictions())
                 {
                     button.disabled = false;
                 }
-                else 
+                else
+                {
+                    button.disabled = true;
+                }
+            });
+
+            document.querySelector('#activity').addEventListener('keyup', function(){
+                if (check_condictions())
+                {
+                    button.disabled = false;
+                }
+                else
                 {
                     button.disabled = true;
                 }
             });
         });
+
+        function check_condictions()
+        {
+            let title = document.querySelector("#title_activity").value;
+            let tags = document.querySelectorAll("#tag");
+            let ages = document.querySelectorAll("#age");
+            let explanation = document.querySelector("#explanation").value;
+            let activity = document.querySelector("#activity").value;
+            if (title.length > 0)
+            {
+                if ((tags[0].checked || tags[1].checked || tags[2].checked || tags[3].checked) && (ages[0].checked || ages[1].checked || ages[2].checked || ages[3].checked))
+                {
+                    if (explanation.length > 0 && explanation.length <= 580)
+                    {
+                        if (activity.length > 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            
+            return false;
+        }
     </script>
 {% endblock %}

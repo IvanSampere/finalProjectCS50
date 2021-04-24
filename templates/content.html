@@ -10,49 +10,49 @@
             <div id="tags">
                 <h5>Tags</h5>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck" name="tag" value="hearing">
+                    <input type="checkbox" class="custom-control-input" id="customCheck" name="tag" value="hearing_impairment">
                     <label class="custom-control-label" for="customCheck">Hearing impairment</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="tag" value="visual">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="tag" value="visual_disability">
                     <label class="custom-control-label" for="customCheck1">Visual disability</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="tag" value="physical">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="tag" value="physical_disability">
                     <label class="custom-control-label" for="customCheck2">Physical disability</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="tag" value="intellectual">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3" name="tag" value="intellectual_disability">
                     <label class="custom-control-label" for="customCheck3">Intellectual disability</label>
                 </div>
             </div>
             <div id="ages">
                 <h5>Ages</h5>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="tag" value="hearing">
+                    <input type="checkbox" class="custom-control-input" id="customCheck4" name="age" value="0-6">
                     <label class="custom-control-label" for="customCheck4">0-6 years old</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck5" name="tag" value="visual">
+                    <input type="checkbox" class="custom-control-input" id="customCheck5" name="age" value="7-11">
                     <label class="custom-control-label" for="customCheck5">7-11 years old</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="tag" value="physical">
+                    <input type="checkbox" class="custom-control-input" id="customCheck6" name="age" value="12-16">
                     <label class="custom-control-label" for="customCheck6">12-16 years old</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck7" name="tag" value="intellectual">
+                    <input type="checkbox" class="custom-control-input" id="customCheck7" name="age" value="16+">
                     <label class="custom-control-label" for="customCheck7">16+ years old</label>
                 </div>
             </div>
             <div id="time">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck8" name="tag" value="physical">
-                    <label class="custom-control-label" for="customCheck8">Older</label>
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="customRadio8" name="time" value="older">
+                    <label class="custom-control-label" for="customRadio8">Older</label>
                 </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck9" name="tag" value="intellectual">
-                    <label class="custom-control-label" for="customCheck9">Newest</label>
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="customRadio9" name="time" value="newest">
+                    <label class="custom-control-label" for="customRadio9">Newest</label>
                 </div>
             </div>
             <input id="btn_nav" class="nav-item btn" type="submit" value="Submit">
@@ -62,7 +62,7 @@
     <div class="content_card">
         <div class="card">
             <h3 class="card-title">{{ activity['title'] }}</h3>
-            <h6 class="card-title">{{ activity['username'] }}</h6>
+            <h6 class="card-title">{{ activity['username'] }}, {{ activity['day_published'] }}</h6>
             <p class="card-text">{{ activity['explanation'] }}</p>
             <a href="/activity?q={{ activity['id'] }}" class="card-link">Visit Activity</a>
         </div>

@@ -93,17 +93,47 @@ def content():
     """ TODO """
     if request.method == 'POST':
         tag = request.form.getlist("tag")
-        print(tag[0])
-        return redirect("/content")
-    else:
-        tag = request.args.get("q")
-        activities = db.execute("""SELECT activities.*, users.username 
-                                   FROM activities
-                                   INNER JOIN users ON activities.user_id = users.id
-                                   INNER JOIN tags ON activities.id = tags.activity_id WHERE tags.name IN (?)""",
-                                   tag)
-        print(activities)
+        age = request.form.getlist("age")
+        time = request.form.get('time')
+
+        if len(tag) == 0:
+            tag = ['hearing_impairment', 'visual_disability', 'physical_disability', 'intellectual_disability']
+        if len(age) == 0:
+            age = ['0-6', '7-11', '12-16', '16+']
+        if len(time) == 0:
+            time = 'newest'
+
+        if time == "newest":
+            activities = db.execute("""SELECT DISTINCT activities.*, users.username
+                                    FROM activities
+                                    INNER JOIN users ON activities.user_id = users.id
+                                    INNER JOIN tags ON activities.id = tags.activity_id
+                                    INNER JOIN ages ON activities.id = ages.activity_id AND tags.activity_id = ages.activity_id
+                                    WHERE tags.name IN (?) AND ages.age IN (?)
+                                    ORDER BY day_published DESC""",
+                                    tag, age)
+        elif time == "older":
+            activities = db.execute("""SELECT DISTINCT activities.*, users.username
+                                    FROM activities
+                                    INNER JOIN users ON activities.user_id = users.id
+                                    INNER JOIN tags ON activities.id = tags.activity_id
+                                    INNER JOIN ages ON activities.id = ages.activity_id 
+                                    WHERE tags.name IN (?) AND ages.age IN (?)""",
+                                    tag, age)
+
         return render_template("content.html", activities=activities)
+
+    # Get the tag with the url
+    tag = request.args.get("q")
+    # query to get the activities
+    activities = db.execute("""SELECT DISTINCT activities.*, users.username 
+                                FROM activities
+                                INNER JOIN users ON activities.user_id = users.id
+                                INNER JOIN tags ON activities.id = tags.activity_id WHERE tags.name IN (?)
+                                ORDER BY day_published DESC""",
+                                tag)
+    # render the template with the activities
+    return render_template("content.html", activities=activities)
 
 
 @app.route("/activity", methods=["GET", "POST"])
@@ -131,7 +161,7 @@ def activity():
 @app.route("/my_activities")
 def my_activities():
     # Get the activity info and user name
-    activities = db.execute("SELECT * FROM activities WHERE user_id = ?", 
+    activities = db.execute("SELECT * FROM activities WHERE user_id = ? ORDER BY day_published DESC", 
                             session['user_id'])
     if len(activities) > 0:
         user = db.execute('SELECT username FROM users WHERE id = ?', 
