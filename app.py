@@ -99,7 +99,7 @@ def content():
             tag = ['hearing_impairment', 'visual_disability', 'physical_disability', 'intellectual_disability']
         if len(age) == 0:
             age = ['0-6', '7-11', '12-16', '16+']
-        if len(time) == 0:
+        if time == None:
             time = 'newest'
 
         if time == "newest":
